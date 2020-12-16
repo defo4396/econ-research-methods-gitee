@@ -1,0 +1,807 @@
+warning('off','all')
+warning
+All warnings have the state 'off'.
+
+disp(' ');
+ 
+disp('Standard A&vW gravity estimation ');
+Standard A&vW gravity estimation 
+disp(' ');
+ 
+% * dist exp_gdp imp_gdp trade_value language
+% * history EU NAFTA ASEAN
+% * Missing values are denoted by 99999
+% * The bilateral trade flows, xij, and distances, dij, where
+% * i=exporter, j=importer are ordered (11,12,...,1N,21,22....,2N,...NN)'
+
+
+
+% why 4900 data? 70*70 countries
+load trdata.mat;
+
+trade   = trdata(:,4);    %Bilateral trade flows (cif values)
+dis     = trdata(:,1);    %Distance
+expgdp  = trdata(:,2);    %Exporter's GDP
+impgdp  = trdata(:,3);    %Importer's GDP
+lang    = trdata(:,5);    %dummy = 1 if both countries share an official language or >9% of population speak same language
+hist    = trdata(:,6);    %dummy = 1 if both countryies share common history (same country in the past or colonial ties)
+eu      = trdata(:,7);    %dummy = 1 if both countries are member EU27/EFTA
+nafta   = trdata(:,8);    %dummy = 1 if both countries are member NAFTA
+asean   = trdata(:,9);    %dummy = 1 if both countries are member ASEAN
+
+N       = sqrt(size(trade,1));     %Number of countries
+m.N     = N;
+m.y     = impgdp(1:N,1);     % GDP of each country
+m.sigma = 5;
+m
+
+m = 
+
+  <a href="matlab:helpPopup struct" style="font-weight:bold">struct</a> with fields:
+
+        N: 70
+        y: [70×1 double]
+    sigma: 5
+
+mis     = 0;     
+for i=1:N*N                   % Count number of missing tradeflows
+    if trade(i) == 99999
+mis=mis+1;
+    end
+end    
+optim
+
+X1 =
+
+         0         0         0         0         0         0
+    0.2000    0.2000    0.2000    0.2000    0.2000    0.2000
+    0.4000    0.4000    0.4000    0.4000    0.4000    0.4000
+    0.6000    0.6000    0.6000    0.6000    0.6000    0.6000
+    0.8000    0.8000    0.8000    0.8000    0.8000    0.8000
+    1.0000    1.0000    1.0000    1.0000    1.0000    1.0000
+
+
+X2 =
+
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+
+
+Y =
+
+   -0.5050   -0.3250   -0.2250   -0.2050   -0.2650   -0.4050
+   -0.3650   -0.1850   -0.0850   -0.0650   -0.1250   -0.2650
+   -0.3050   -0.1250   -0.0250   -0.0050   -0.0650   -0.2050
+   -0.3250   -0.1450   -0.0450   -0.0250   -0.0850   -0.2250
+   -0.4250   -0.2450   -0.1450   -0.1250   -0.1850   -0.3250
+   -0.6050   -0.4250   -0.3250   -0.3050   -0.3650   -0.5050
+
+
+val =
+
+   -0.0050
+
+
+idx =
+
+    21
+
+
+ans =
+
+    0.4000    0.6000
+
+
+xmax =
+
+    0.2045
+
+
+fmax =
+
+    3.1015
+
+
+ans =
+
+    8.5982
+
+ 
+ Iteration   Func-count     min f(x)         Procedure
+     0            1             24.2         
+     1            3            20.05         initial simplex
+     2            5           5.1618         expand
+     3            7           4.4978         reflect
+     4            9           4.4978         contract outside
+     5           11          4.38136         contract inside
+     6           13          4.24527         contract inside
+     7           15          4.21762         reflect
+     8           17          4.21129         contract inside
+     9           19          4.13556         expand
+    10           21          4.13556         contract inside
+    11           23          4.01273         expand
+    12           25          3.93738         expand
+    13           27          3.60261         expand
+    14           28          3.60261         reflect
+    15           30          3.46622         reflect
+    16           32          3.21605         expand
+    17           34          3.16491         reflect
+    18           36          2.70687         expand
+    19           37          2.70687         reflect
+    20           39          2.00218         expand
+    21           41          2.00218         contract inside
+    22           43          2.00218         contract inside
+    23           45          1.81543         expand
+    24           47          1.73481         contract outside
+    25           49          1.31697         expand
+    26           50          1.31697         reflect
+    27           51          1.31697         reflect
+    28           53           1.1595         reflect
+    29           55          1.07674         contract inside
+    30           57         0.883492         reflect
+    31           59         0.883492         contract inside
+    32           61         0.669165         expand
+    33           63         0.669165         contract inside
+    34           64         0.669165         reflect
+    35           66         0.536729         reflect
+    36           68         0.536729         contract inside
+    37           70         0.423294         expand
+    38           72         0.423294         contract outside
+    39           74         0.398527         reflect
+    40           76          0.31447         expand
+    41           77          0.31447         reflect
+    42           79         0.190317         expand
+    43           81         0.190317         contract inside
+    44           82         0.190317         reflect
+    45           84          0.13696         reflect
+    46           86          0.13696         contract outside
+    47           88         0.113128         contract outside
+    48           90          0.11053         contract inside
+    49           92          0.10234         reflect
+    50           94         0.101184         contract inside
+    51           96        0.0794969         expand
+    52           97        0.0794969         reflect
+    53           98        0.0794969         reflect
+    54          100        0.0569294         expand
+    55          102        0.0569294         contract inside
+    56          104        0.0344855         expand
+    57          106        0.0179534         expand
+    58          108        0.0169469         contract outside
+    59          110       0.00401463         reflect
+    60          112       0.00401463         contract inside
+    61          113       0.00401463         reflect
+    62          115      0.000369954         reflect
+    63          117      0.000369954         contract inside
+    64          118      0.000369954         reflect
+    65          120      0.000369954         contract inside
+    66          122      5.90111e-05         contract outside
+    67          124      3.36682e-05         contract inside
+    68          126      3.36682e-05         contract outside
+    69          128      1.89159e-05         contract outside
+    70          130      8.46083e-06         contract inside
+    71          132      2.88255e-06         contract inside
+    72          133      2.88255e-06         reflect
+    73          135      7.48997e-07         contract inside
+    74          137      7.48997e-07         contract inside
+    75          139      6.20365e-07         contract inside
+    76          141      2.16919e-07         contract outside
+    77          143      1.00244e-07         contract inside
+    78          145      5.23487e-08         contract inside
+    79          147      5.03503e-08         contract inside
+    80          149       2.0043e-08         contract inside
+    81          151      1.12293e-09         contract inside
+    82          153      1.12293e-09         contract outside
+    83          155      1.12293e-09         contract inside
+    84          157      1.10755e-09         contract outside
+    85          159      8.17766e-10         contract inside
+ 
+Optimization terminated:
+ the current x satisfies the termination criteria using OPTIONS.TolX of 1.000000e-04 
+ and F(X) satisfies the convergence criteria using OPTIONS.TolFun of 1.000000e-04 
+
+
+x =
+
+    1.0000    1.0000
+
+
+n =
+
+     8
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   2.2204e-16
+
+
+ans =
+
+   -0.7137
+
+optim
+
+X1 =
+
+         0         0         0         0         0         0
+    0.2000    0.2000    0.2000    0.2000    0.2000    0.2000
+    0.4000    0.4000    0.4000    0.4000    0.4000    0.4000
+    0.6000    0.6000    0.6000    0.6000    0.6000    0.6000
+    0.8000    0.8000    0.8000    0.8000    0.8000    0.8000
+    1.0000    1.0000    1.0000    1.0000    1.0000    1.0000
+
+
+X2 =
+
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+         0    0.2000    0.4000    0.6000    0.8000    1.0000
+
+
+Y =
+
+   -0.5050   -0.3250   -0.2250   -0.2050   -0.2650   -0.4050
+   -0.3650   -0.1850   -0.0850   -0.0650   -0.1250   -0.2650
+   -0.3050   -0.1250   -0.0250   -0.0050   -0.0650   -0.2050
+   -0.3250   -0.1450   -0.0450   -0.0250   -0.0850   -0.2250
+   -0.4250   -0.2450   -0.1450   -0.1250   -0.1850   -0.3250
+   -0.6050   -0.4250   -0.3250   -0.3050   -0.3650   -0.5050
+
+
+val =
+
+   -0.0050
+
+
+idx =
+
+    21
+
+
+ans =
+
+    0.4000    0.6000
+
+
+xmax =
+
+    0.2045
+
+
+fmax =
+
+    3.1015
+
+
+ans =
+
+    8.5982
+
+ 
+ Iteration   Func-count     min f(x)         Procedure
+     0            1             24.2         
+     1            3            20.05         initial simplex
+     2            5           5.1618         expand
+     3            7           4.4978         reflect
+     4            9           4.4978         contract outside
+     5           11          4.38136         contract inside
+     6           13          4.24527         contract inside
+     7           15          4.21762         reflect
+     8           17          4.21129         contract inside
+     9           19          4.13556         expand
+    10           21          4.13556         contract inside
+    11           23          4.01273         expand
+    12           25          3.93738         expand
+    13           27          3.60261         expand
+    14           28          3.60261         reflect
+    15           30          3.46622         reflect
+    16           32          3.21605         expand
+    17           34          3.16491         reflect
+    18           36          2.70687         expand
+    19           37          2.70687         reflect
+    20           39          2.00218         expand
+    21           41          2.00218         contract inside
+    22           43          2.00218         contract inside
+    23           45          1.81543         expand
+    24           47          1.73481         contract outside
+    25           49          1.31697         expand
+    26           50          1.31697         reflect
+    27           51          1.31697         reflect
+    28           53           1.1595         reflect
+    29           55          1.07674         contract inside
+    30           57         0.883492         reflect
+    31           59         0.883492         contract inside
+    32           61         0.669165         expand
+    33           63         0.669165         contract inside
+    34           64         0.669165         reflect
+    35           66         0.536729         reflect
+    36           68         0.536729         contract inside
+    37           70         0.423294         expand
+    38           72         0.423294         contract outside
+    39           74         0.398527         reflect
+    40           76          0.31447         expand
+    41           77          0.31447         reflect
+    42           79         0.190317         expand
+    43           81         0.190317         contract inside
+    44           82         0.190317         reflect
+    45           84          0.13696         reflect
+    46           86          0.13696         contract outside
+    47           88         0.113128         contract outside
+    48           90          0.11053         contract inside
+    49           92          0.10234         reflect
+    50           94         0.101184         contract inside
+    51           96        0.0794969         expand
+    52           97        0.0794969         reflect
+    53           98        0.0794969         reflect
+    54          100        0.0569294         expand
+    55          102        0.0569294         contract inside
+    56          104        0.0344855         expand
+    57          106        0.0179534         expand
+    58          108        0.0169469         contract outside
+    59          110       0.00401463         reflect
+    60          112       0.00401463         contract inside
+    61          113       0.00401463         reflect
+    62          115      0.000369954         reflect
+    63          117      0.000369954         contract inside
+    64          118      0.000369954         reflect
+    65          120      0.000369954         contract inside
+    66          122      5.90111e-05         contract outside
+    67          124      3.36682e-05         contract inside
+    68          126      3.36682e-05         contract outside
+    69          128      1.89159e-05         contract outside
+    70          130      8.46083e-06         contract inside
+    71          132      2.88255e-06         contract inside
+    72          133      2.88255e-06         reflect
+    73          135      7.48997e-07         contract inside
+    74          137      7.48997e-07         contract inside
+    75          139      6.20365e-07         contract inside
+    76          141      2.16919e-07         contract outside
+    77          143      1.00244e-07         contract inside
+    78          145      5.23487e-08         contract inside
+    79          147      5.03503e-08         contract inside
+    80          149       2.0043e-08         contract inside
+    81          151      1.12293e-09         contract inside
+    82          153      1.12293e-09         contract outside
+    83          155      1.12293e-09         contract inside
+    84          157      1.10755e-09         contract outside
+    85          159      8.17766e-10         contract inside
+ 
+Optimization terminated:
+ the current x satisfies the termination criteria using OPTIONS.TolX of 1.000000e-04 
+ and F(X) satisfies the convergence criteria using OPTIONS.TolFun of 1.000000e-04 
+
+
+x =
+
+    1.0000    1.0000
+
+
+n =
+
+     8
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   2.2204e-16
+
+
+ans =
+
+   -0.7137
+
+untitled
+ 
+ Iteration   Func-count     min f(x)         Procedure
+     0            1             24.2         
+     1            3            20.05         initial simplex
+     2            5           5.1618         expand
+     3            7           4.4978         reflect
+     4            9           4.4978         contract outside
+     5           11          4.38136         contract inside
+     6           13          4.24527         contract inside
+     7           15          4.21762         reflect
+     8           17          4.21129         contract inside
+     9           19          4.13556         expand
+    10           21          4.13556         contract inside
+    11           23          4.01273         expand
+    12           25          3.93738         expand
+    13           27          3.60261         expand
+    14           28          3.60261         reflect
+    15           30          3.46622         reflect
+    16           32          3.21605         expand
+    17           34          3.16491         reflect
+    18           36          2.70687         expand
+    19           37          2.70687         reflect
+    20           39          2.00218         expand
+    21           41          2.00218         contract inside
+    22           43          2.00218         contract inside
+    23           45          1.81543         expand
+    24           47          1.73481         contract outside
+    25           49          1.31697         expand
+    26           50          1.31697         reflect
+    27           51          1.31697         reflect
+    28           53           1.1595         reflect
+    29           55          1.07674         contract inside
+    30           57         0.883492         reflect
+    31           59         0.883492         contract inside
+    32           61         0.669165         expand
+    33           63         0.669165         contract inside
+    34           64         0.669165         reflect
+    35           66         0.536729         reflect
+    36           68         0.536729         contract inside
+    37           70         0.423294         expand
+    38           72         0.423294         contract outside
+    39           74         0.398527         reflect
+    40           76          0.31447         expand
+    41           77          0.31447         reflect
+    42           79         0.190317         expand
+    43           81         0.190317         contract inside
+    44           82         0.190317         reflect
+    45           84          0.13696         reflect
+    46           86          0.13696         contract outside
+    47           88         0.113128         contract outside
+    48           90          0.11053         contract inside
+    49           92          0.10234         reflect
+    50           94         0.101184         contract inside
+    51           96        0.0794969         expand
+    52           97        0.0794969         reflect
+    53           98        0.0794969         reflect
+    54          100        0.0569294         expand
+    55          102        0.0569294         contract inside
+    56          104        0.0344855         expand
+    57          106        0.0179534         expand
+    58          108        0.0169469         contract outside
+    59          110       0.00401463         reflect
+    60          112       0.00401463         contract inside
+    61          113       0.00401463         reflect
+    62          115      0.000369954         reflect
+    63          117      0.000369954         contract inside
+    64          118      0.000369954         reflect
+    65          120      0.000369954         contract inside
+    66          122      5.90111e-05         contract outside
+    67          124      3.36682e-05         contract inside
+    68          126      3.36682e-05         contract outside
+    69          128      1.89159e-05         contract outside
+    70          130      8.46083e-06         contract inside
+    71          132      2.88255e-06         contract inside
+    72          133      2.88255e-06         reflect
+    73          135      7.48997e-07         contract inside
+    74          137      7.48997e-07         contract inside
+    75          139      6.20365e-07         contract inside
+    76          141      2.16919e-07         contract outside
+    77          143      1.00244e-07         contract inside
+    78          145      5.23487e-08         contract inside
+    79          147      5.03503e-08         contract inside
+    80          149       2.0043e-08         contract inside
+    81          151      1.12293e-09         contract inside
+    82          153      1.12293e-09         contract outside
+    83          155      1.12293e-09         contract inside
+    84          157      1.10755e-09         contract outside
+    85          159      8.17766e-10         contract inside
+ 
+Optimization terminated:
+ the current x satisfies the termination criteria using OPTIONS.TolX of 1.000000e-04 
+ and F(X) satisfies the convergence criteria using OPTIONS.TolFun of 1.000000e-04 
+
+
+x =
+
+    1.0000    1.0000
+
+
+n =
+
+     8
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   2.2204e-16
+
+
+ans =
+
+   -0.7137
+
+untitled2
+
+n =
+
+     8
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   2.2204e-16
+
+
+ans =
+
+   -0.7137
+
+untitled2
+
+n =
+
+     8
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   2.2204e-16
+
+
+ans =
+
+   -0.7137
+
+optim2
+
+n =
+
+    46
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   7.5562e-06
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1                4                             4
+     1           2        -0.121094           0.25           1.94  
+     2           4        -0.598983       0.461795           1.16  
+     3           5        -0.688992              1          0.611  
+     4           6        -0.713694              1         0.0113  
+     5           7        -0.713732              1        0.00431  
+     6           8        -0.713734              1       0.000331  
+     7           9        -0.713734              1       2.57e-05  
+     8          10        -0.713734              1       1.72e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.446424e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+    0.0335   -0.5670
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           3                4                             4
+     1           6        -0.121094           0.25           1.94  
+     2          12        -0.598983       0.461795           1.16  
+     3          15        -0.688992              1          0.611  
+     4          18        -0.713694              1         0.0113  
+     5          21        -0.713732              1        0.00431  
+     6          24        -0.713734              1       0.000331  
+     7          27        -0.713734              1       2.57e-05  
+     8          30        -0.713734              1       1.71e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.427267e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+{Undefined function or variable 'knitromatlab'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('optim2', '/Users/faqiangmacpro/Library/Mobile Documents/com~apple~CloudDocs/PhD/[4]Empirical Method/Lectures-master/7_Optimization2/optim2.m', 283)" style="font-weight:bold">optim2</a> (<a href="matlab: opentoline('/Users/faqiangmacpro/Library/Mobile Documents/com~apple~CloudDocs/PhD/[4]Empirical Method/Lectures-master/7_Optimization2/optim2.m',283,0)">line 283</a>)
+[sol] = knitromatlab(@(x) qfunc(x), [1, 1])
+} 
+clear
+clc
+optim2
+
+n =
+
+    46
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   7.5562e-06
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1                4                             4
+     1           2        -0.121094           0.25           1.94  
+     2           4        -0.598983       0.461795           1.16  
+     3           5        -0.688992              1          0.611  
+     4           6        -0.713694              1         0.0113  
+     5           7        -0.713732              1        0.00431  
+     6           8        -0.713734              1       0.000331  
+     7           9        -0.713734              1       2.57e-05  
+     8          10        -0.713734              1       1.72e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.446424e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+    0.0335   -0.5670
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           3                4                             4
+     1           6        -0.121094           0.25           1.94  
+     2          12        -0.598983       0.461795           1.16  
+     3          15        -0.688992              1          0.611  
+     4          18        -0.713694              1         0.0113  
+     5          21        -0.713732              1        0.00431  
+     6          24        -0.713734              1       0.000331  
+     7          27        -0.713734              1       2.57e-05  
+     8          30        -0.713734              1       1.71e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.427267e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+{Undefined function or variable 'knitromatlab'.
+
+Error in <a href="matlab:matlab.internal.language.introspective.errorDocCallback('optim2', '/Users/faqiangmacpro/Library/Mobile Documents/com~apple~CloudDocs/PhD/[4]Empirical Method/Lectures-master/7_Optimization2/optim2.m', 283)" style="font-weight:bold">optim2</a> (<a href="matlab: opentoline('/Users/faqiangmacpro/Library/Mobile Documents/com~apple~CloudDocs/PhD/[4]Empirical Method/Lectures-master/7_Optimization2/optim2.m',283,0)">line 283</a>)
+[sol] = knitromatlab(@(x) qfunc(x), [1, 1])
+} 
+optim2
+
+n =
+
+    46
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   7.5562e-06
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1                4                             4
+     1           2        -0.121094           0.25           1.94  
+     2           4        -0.598983       0.461795           1.16  
+     3           5        -0.688992              1          0.611  
+     4           6        -0.713694              1         0.0113  
+     5           7        -0.713732              1        0.00431  
+     6           8        -0.713734              1       0.000331  
+     7           9        -0.713734              1       2.57e-05  
+     8          10        -0.713734              1       1.72e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.446424e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+    0.0335   -0.5670
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           3                4                             4
+     1           6        -0.121094           0.25           1.94  
+     2          12        -0.598983       0.461795           1.16  
+     3          15        -0.688992              1          0.611  
+     4          18        -0.713694              1         0.0113  
+     5          21        -0.713732              1        0.00431  
+     6          24        -0.713734              1       0.000331  
+     7          27        -0.713734              1       2.57e-05  
+     8          30        -0.713734              1       1.71e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.427267e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+optim2
+
+n =
+
+    46
+
+
+x =
+
+    0.0335
+   -0.5670
+
+
+focerr =
+
+   7.5562e-06
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           1                4                             4
+     1           2        -0.121094           0.25           1.94  
+     2           4        -0.598983       0.461795           1.16  
+     3           5        -0.688992              1          0.611  
+     4           6        -0.713694              1         0.0113  
+     5           7        -0.713732              1        0.00431  
+     6           8        -0.713734              1       0.000331  
+     7           9        -0.713734              1       2.57e-05  
+     8          10        -0.713734              1       1.72e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.446424e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
+    0.0335   -0.5670
+
+                                                        First-order 
+ Iteration  Func-count       f(x)        Step-size       optimality
+     0           3                4                             4
+     1           6        -0.121094           0.25           1.94  
+     2          12        -0.598983       0.461795           1.16  
+     3          15        -0.688992              1          0.611  
+     4          18        -0.713694              1         0.0113  
+     5          21        -0.713732              1        0.00431  
+     6          24        -0.713734              1       0.000331  
+     7          27        -0.713734              1       2.57e-05  
+     8          30        -0.713734              1       1.71e-07  
+
+<a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'local_min_unconstrained','CSHelpWindow');">Local minimum found</a>.
+
+Optimization completed because the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'grad_size','CSHelpWindow');">size of the gradient</a> is less than
+the value of the <a href = "matlab: helpview([docroot '/toolbox/optim/msg_csh/optim_msg_csh.map'],'optimality_tolerance_unc','CSHelpWindow');">optimality tolerance</a>.
+
+<<a href = "matlab: createExitMsg({'optim:fminusub:Exit1basic'},{'optim:fminusub:Exit1detailed','3.427267e-08','1.000000e-06'},true,true);;">stopping criteria details</a>>
