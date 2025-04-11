@@ -1,7 +1,7 @@
 # Econ-ResearchMethods Introduction
 This Gitee repository contains course materials for the graduate-level Research Methods for Economics and Management. 
 
-Please go to https://github.com/zhiyuanryanchen/econ-research-methods for the Github repository
+Please go to https://gitee.com/zhiyuanryanchen/econ-research-methods for the Github repository
 
 ## Description
 This course is intended to train students in frontier research methods
