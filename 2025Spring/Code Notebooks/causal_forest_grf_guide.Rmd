@@ -220,13 +220,14 @@ then average these to produce a final prediction. This procedure is a
 double summation, first over trees, then over training samples. We can
 swap the order of summation and obtain:
 
+```{=tex}
 \begin{equation*}
 \begin{split}
 & \hat \mu(x) = \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}} {|L_b(x)|} \\
 & = \sum_{i=1}^{n} Y_i \color{blue}{\alpha_i(x)},
 \end{split}
 \end{equation*}
-
+```
 where we have defined $\color{blue}{\alpha_i(x)}$ as the frequency with
 which the $i$-th training sample falls into the same leaf as $x$. That
 is, an equivalent description of a random forest's prediction phase is
@@ -318,7 +319,7 @@ It looks like the following:
 
 $$
 \hat \tau_{AIPW} = \frac{1}{n} \sum_{i=1}^{n}\left( \mu(X_i, 1) - \mu(X_i, 0) + W_i \frac{Y_i - \mu(X_i, 1)}{e(X_i)} - (1 - W_i)\frac{Y_i - \mu(X_i, 0)}{1 - e(X_i)} \right),
-$$ where $\mu(X_i, 1),  \mu(X_i, 0)$ are estimates of the conditional
+$$ where $\mu(X_i, 1), \mu(X_i, 0)$ are estimates of the conditional
 means in the two treatment arms:
 $\mu(X_i, W_i) = E[Y_i | X_i = x, W_i = w]$. This expression can be
 rearranged and expressed as
